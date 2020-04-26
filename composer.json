@@ -1,5 +1,5 @@
 {
-    "name": "ae/salesforce-rest-sdk",
+    "name": "playable-cn/salesforce-rest-sdk",
     "description": "An SDK for the Salesforce Rest API",
     "type": "library",
     "require": {
@@ -18,6 +18,10 @@
         {
             "name": "Alex Boyce",
             "email": "alex.boyce@advisorsexcel.com"
+        },
+        {
+            "name": "playable-cn",
+            "email": "developer@playable.cn"
         }
     ],
     "autoload": {
