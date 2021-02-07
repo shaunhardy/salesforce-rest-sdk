@@ -80,6 +80,11 @@ class TokenOAuthProvider implements AuthProviderInterface
      */
     protected $identityUrl;
 
+    /**
+     * @var callable|null
+     */
+    protected $tokenReauthCallback;
+
     public function __construct(
         string $clientId,
         string $clientSecret,
@@ -143,6 +148,14 @@ class TokenOAuthProvider implements AuthProviderInterface
     {
         if (!$reauth && $this->isAuthorized && strlen($this->token) > 0) {
             return "{$this->tokenType} {$this->token}";
+        }
+
+        if (self::GRANT_FIXED_TOKEN === $this->grantType) {
+            if ($this->tokenReauthCallback) {
+                $this->token = $this->tokenReauthCallback($this->clientId, $this->token);
+                $this->isAuthorized = true;
+                return "{$this->tokenType} {$this->token}";
+            }
         }
 
         if (self::GRANT_PASSWORD === $this->grantType) {
@@ -363,5 +376,10 @@ class TokenOAuthProvider implements AuthProviderInterface
         $this->code = $code;
 
         return $this;
+    }
+
+    public function setTokenReauthCallback(callable $callback)
+    {
+        $this->tokenReauthCallback = $callback;
     }
 }
