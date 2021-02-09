@@ -152,7 +152,8 @@ class TokenOAuthProvider implements AuthProviderInterface
 
         if (self::GRANT_FIXED_TOKEN === $this->grantType) {
             if ($this->tokenReauthCallback) {
-                $this->token = $this->tokenReauthCallback($this->clientId, $this->token);
+                //$this->token = $this->tokenReauthCallback($this->clientId, $this->token);
+                $this->token = call_user_func($this->tokenReauthCallback, $this->clientId, $this->token);
                 $this->isAuthorized = true;
                 return "{$this->tokenType} {$this->token}";
             }
