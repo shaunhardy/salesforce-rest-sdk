@@ -1,4 +1,7 @@
 # CHANGELOG
+##v2.0.3 (2021-02-09)
+[FIX] fix callback call
+
 ##v2.0.2 (2021-02-07)
 [NEW] add token reauth callback for fixed-token grant type
 
