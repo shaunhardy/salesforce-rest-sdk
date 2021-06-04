@@ -1,16 +1,16 @@
 {
-    "name": "playable-cn/salesforce-rest-sdk",
+    "name": "fromholdio/salesforce-rest-sdk",
     "description": "An SDK for the Salesforce Rest API",
     "type": "library",
     "require": {
-        "php": "^7.2",
-        "guzzlehttp/guzzle": "^6.3",
-        "jms/serializer": "^3.0",
-        "ramsey/uuid": "^3.8",
-        "doctrine/collections": "^1.5",
-        "symfony/cache": "^4.0|^5.0",
+        "php": "^7.2|^8.0",
+        "guzzlehttp/guzzle": "^7.3",
+        "jms/serializer": "^3.12",
+        "ramsey/uuid": "^4.1",
+        "doctrine/collections": "^1.6",
+        "symfony/cache": "^4.0|^5.0|^6.0",
         "psr/log": "^1.1",
-        "symfony/expression-language": "^4.2|^5.0",
+        "symfony/expression-language": "^4.2|^5.0|^6.0",
         "jms/metadata": "^1.0|^2.0"
     },
     "license": "proprietary",
@@ -22,6 +22,10 @@
         {
             "name": "playable-cn",
             "email": "developer@playable.cn"
+        },
+        {
+            "name": "Luke Fromhold",
+            "email": "hello@fromhold.io"
         }
     ],
     "autoload": {
