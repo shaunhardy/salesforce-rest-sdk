@@ -18,6 +18,7 @@ class SubscribeState extends ClientState
                             "Failed to subscribe to channel {channel}",
                             [
                                 'channel' => $c->getChannelId(),
+                                'error' => $message->getError(),
                             ]
                         );
                     }
