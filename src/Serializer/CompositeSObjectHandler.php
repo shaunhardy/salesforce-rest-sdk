@@ -28,24 +28,24 @@ class CompositeSObjectHandler implements SubscribingHandlerInterface
         return [
             [
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
-                'type' => CompositeSObject::class,
-                'format' => 'json',
-                'method' => 'serializeCompositeSObjectTojson'
+                'type'      => CompositeSObject::class,
+                'format'    => 'json',
+                'method'    => 'serializeCompositeSObjectTojson',
             ],
             [
                 'direction' => GraphNavigator::DIRECTION_DESERIALIZATION,
-                'type' => CompositeSObject::class,
-                'format' => 'json',
-                'method' => 'deserializeCompositeSObjectFromjson'
-            ]
+                'type'      => CompositeSObject::class,
+                'format'    => 'json',
+                'method'    => 'deserializeCompositeSObjectFromjson',
+            ],
         ];
     }
 
     public function serializeCompositeSObjectTojson(
         JsonSerializationVisitor $visitor,
-        CompositeSObject $sobject,
-        array $type,
-        SerializationContext $context
+        CompositeSObject         $sobject,
+        array                    $type,
+        SerializationContext     $context
     ): array {
         $object = [
             'attributes' => $sobject->getAttributes(),
@@ -56,7 +56,7 @@ class CompositeSObjectHandler implements SubscribingHandlerInterface
                 continue;
             }
             if (is_object($value)) {
-                $class = get_class($value);
+                $class         = get_class($value);
                 $classMetadata = new ClassMetadata($class);
                 $visitor->startVisitingObject(
                     $classMetadata,
@@ -83,7 +83,7 @@ class CompositeSObjectHandler implements SubscribingHandlerInterface
                         break;
                 }
 
-                $resultArray = $visitor->endVisitingObject(
+                $resultArray    = $visitor->endVisitingObject(
                     $classMetadata,
                     $value,
                     []
@@ -92,7 +92,6 @@ class CompositeSObjectHandler implements SubscribingHandlerInterface
             } else {
                 $object[$field] = $value;
             }
-
         }
 
         return $object;
@@ -100,9 +99,9 @@ class CompositeSObjectHandler implements SubscribingHandlerInterface
 
     public function deserializeCompositeSObjectFromjson(
         JsonDeserializationVisitor $visitor,
-        array $data,
-        array $type,
-        DeserializationContext $context
+        array                      $data,
+        array                      $type,
+        DeserializationContext     $context
     ) {
         $sobject = new CompositeSObject();
 
@@ -129,14 +128,15 @@ class CompositeSObjectHandler implements SubscribingHandlerInterface
             }
 
             if (is_array($value) && array_key_exists('hasErrors', $value) && array_key_exists('records', $value)
-                && is_array($value['records'])) {
+                && is_array($value['records'])
+            ) {
                 $sobject->$field = $context->getNavigator()->accept(
                     $value,
                     ['name' => CompositeCollection::class]
-                )
-                ;
+                );
             } elseif (is_string($value)
-                && preg_match('/^\d{4}-\d{2}-\d{2}\T\d{2}:\d{2}:\d{2}(\.\d{4})?(\+\d{4}|\Z)$/', $value) != false) {
+                && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{4})?(\+\d{4}|\Z)$/', $value) != false
+            ) {
                 $sobject->$field = $context->getNavigator()->accept(
                     $value,
                     ['name' => 'DateTime', 'params' => [\DATE_ISO8601, 'UTC']]

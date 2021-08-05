@@ -26,24 +26,24 @@ class SObjectHandler implements SubscribingHandlerInterface
         return [
             [
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
-                'type' => SObject::class,
-                'format' => 'json',
-                'method' => 'serializeSObjectTojson'
+                'type'      => SObject::class,
+                'format'    => 'json',
+                'method'    => 'serializeSObjectTojson',
             ],
             [
                 'direction' => GraphNavigator::DIRECTION_DESERIALIZATION,
-                'type' => SObject::class,
-                'format' => 'json',
-                'method' => 'deserializeSObjectFromjson'
-            ]
+                'type'      => SObject::class,
+                'format'    => 'json',
+                'method'    => 'deserializeSObjectFromjson',
+            ],
         ];
     }
 
     public function serializeSObjectTojson(
         JsonSerializationVisitor $visitor,
-        SObject $sobject,
-        array $type,
-        Context $context
+        SObject                  $sobject,
+        array                    $type,
+        Context                  $context
     ): array {
         $object = [];
 
@@ -52,7 +52,7 @@ class SObjectHandler implements SubscribingHandlerInterface
                 continue;
             }
             if (is_object($value)) {
-                $class = get_class($value);
+                $class         = get_class($value);
                 $classMetadata = new ClassMetadata($class);
                 $visitor->startVisitingObject(
                     $classMetadata,
@@ -73,7 +73,7 @@ class SObjectHandler implements SubscribingHandlerInterface
                         );
                         break;
                 }
-                $resultArray = $visitor->endVisitingObject(
+                $resultArray    = $visitor->endVisitingObject(
                     $classMetadata,
                     $value,
                     []
@@ -89,9 +89,9 @@ class SObjectHandler implements SubscribingHandlerInterface
 
     public function deserializeSObjectFromjson(
         JsonDeserializationVisitor $visitor,
-        array $data,
-        array $type,
-        DeserializationContext $context
+        array                      $data,
+        array                      $type,
+        DeserializationContext     $context
     ) {
         $sobject = new SObject();
 
@@ -100,7 +100,8 @@ class SObjectHandler implements SubscribingHandlerInterface
 
         foreach ($data as $field => $value) {
             if (is_string($value)
-                && preg_match('/^\d{4}-\d{2}-\d{2}\T\d{2}:\d{2}:\d{2}(\.\d{4})?(\+\d{4}|\Z)$/', $value) != false) {
+                && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{4})?(\+\d{4}|\Z)$/', $value) != false
+            ) {
                 $sobject->$field = $context->getNavigator()->accept(
                     $value,
                     ['name' => 'DateTime', 'params' => [\DATE_ISO8601, 'UTC']]

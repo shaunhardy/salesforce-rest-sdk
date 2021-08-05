@@ -9,9 +9,9 @@
       <option name="NAMING" value="true" />
     </inspection_tool>
     <inspection_tool class="PhpCSValidationInspection" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="CODING_STANDARD" value="PSR2" />
       <option name="CUSTOM_RULESET_PATH" value="$USER_HOME$/phpcs-ruleset.xml" />
       <option name="WARNING_HIGHLIGHT_LEVEL_NAME" value="ERROR" />
+      <option name="EXTENSIONS" value="php,js,css,inc" />
     </inspection_tool>
   </profile>
 </component>
